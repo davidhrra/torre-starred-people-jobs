@@ -28,7 +28,14 @@ const UserSchema = new Schema(
                 required: true,
                 default: ""
             }
+        },
+        lastLogin: {
+            type: Types.Date,
+            required: false
         }
+    },
+    {
+        timestamps: true
     }
 );
 
