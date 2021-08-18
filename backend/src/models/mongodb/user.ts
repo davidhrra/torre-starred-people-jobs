@@ -67,3 +67,5 @@ UserSchema.pre<UserDocument>('save', async function save(next) {
 UserSchema.methods.comparePassword = function (candidatePassword: string): boolean {
     return compareSync(candidatePassword, (this as UserDocument).password);
 };
+
+export const User = model<UserDocument>('User', UserSchema, "users");
