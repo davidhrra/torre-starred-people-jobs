@@ -1,4 +1,4 @@
-import { model, Schema, SchemaDefinition } from "mongoose";
+import { model, Schema } from "mongoose";
 import { UserDocument } from "../documents";
 import { compareSync, genSaltSync, hashSync } from "bcryptjs";
 const { Types } = Schema;

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { sign, verify } from "jsonwebtoken";
+import { JwtPayload, sign, verify } from "jsonwebtoken";
 import { jwtSecret } from "../configurations";
 import { User } from "../models";
 
@@ -15,10 +15,10 @@ export const JWTMiddleware = async (request: Request, response: Response, next: 
     }
 
     const token = headerToken.split("Bearer ")[1];
-    let jwtPayload = <any>verify(token, jwtSecret);
+    const jwtPayload = <JwtPayload>verify(token, jwtSecret);
     response.locals.user = jwtPayload;
-    const user = await User.findById(jwtPayload._id, '-password');
-    
+    const user = await User.findById(jwtPayload!._id, '-password');
+
     if (!user) {
         return response.status(401).json({ error: true, message: "The given user doesnt exists" });
     }
@@ -28,7 +28,7 @@ export const JWTMiddleware = async (request: Request, response: Response, next: 
         (user.lastLogin.getTime() / 1000).toString().replace(/\.\d+/, "")
     );
 
-    if (dbLastLogin > jwtPayload.iat) {
+    if (dbLastLogin > jwtPayload!.iat!) {
         return response.status(401).json({ message: "Invalid token" });
     }
     const { userId, username } = jwtPayload;

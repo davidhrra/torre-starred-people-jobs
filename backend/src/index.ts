@@ -1,13 +1,13 @@
 import { config } from "dotenv";
 config();
 
-import { userController, authController } from "./controllers";
+import { userController, authController, savedItemsController } from "./controllers";
 import morgan from "morgan";
 import express from "express";
 import { port, mongoDBConnectionString } from "./configurations";
 import { openConnectionToMongoDB } from "./models";
+import cors from 'cors'
 
-const cors = require("cors");
 const app = express();
 
 app.use(morgan("dev"));
@@ -16,6 +16,7 @@ app.use(cors());
 
 app.use("/user", userController);
 app.use("/auth", authController);
+app.use("/saved-items", savedItemsController)
 
 app.listen(port, async () => {
     try {
