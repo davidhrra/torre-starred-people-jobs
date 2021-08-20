@@ -3,6 +3,7 @@ import router from '@/router'
 import axios from 'axios'
 import Vue from 'vue'
 import Vuex from 'vuex'
+import _ from 'lodash'
 
 Vue.use(Vuex)
 
@@ -29,6 +30,24 @@ export default new Vuex.Store({
     },
     setUserSavedItems: (state, payload) => {
       state.userSavedItems = payload.item
+    },
+    setUserSavedItem: (state, payload) => {
+      const { item: newItem } = payload
+      // eslint-disable-next-line
+      const itemIndex = state.userSavedItems.findIndex((item: any) => item._id === newItem._id)
+      if (itemIndex >= 0) {
+        // eslint-disable-next-line
+        (state.userSavedItems as any).splice(itemIndex, 1, newItem);
+      }
+    },
+    deleteUserSavedItem: (state, payload) => {
+      const { item: deletedItem } = payload
+      // eslint-disable-next-line
+      const itemIndex = state.userSavedItems.findIndex((item: any) => item._id === deletedItem._id)
+      if (itemIndex >= 0) {
+        // eslint-disable-next-line
+        (state.userSavedItems as any).splice(itemIndex, 1);
+      }
     }
   },
   actions: {
@@ -53,7 +72,6 @@ export default new Vuex.Store({
       router.push('/')
     },
     loadTorreUserInfo: async ({ commit, state }) => {
-      console.log(state.user)
       const { torreUsername } = state.user
       const url = `${environment.appAPI}/user/torre/${torreUsername}`
       const response = await axios.get(url)
@@ -66,6 +84,25 @@ export default new Vuex.Store({
       const response = await axios.get(url, { headers: { Authorization: state.token } })
       const { item } = response.data
       commit('setUserSavedItems', { item })
+    },
+    starItem: async ({ commit, state }, payload) => {
+      const { torreId, type, starred } = payload
+      // eslint-disable-next-line
+      const foundItem: any = _.cloneDeep(state.userSavedItems.find((item: any) => item.torreId === torreId && item.type === type));
+      if (!foundItem) {
+        return
+      }
+      foundItem.starred = starred
+      const url = `${environment.appAPI}/saved-items/${foundItem._id}`
+      const response = await axios.put(url, { item: foundItem }, { headers: { Authorization: state.token } })
+      commit('setUserSavedItem', { item: response.data.item })
+    },
+    deleteItem: async ({ commit, state }, payload) => {
+      const { id } = payload
+      // eslint-disable-next-line
+      const url = `${environment.appAPI}/saved-items/${id}`
+      const response = await axios.delete(url, { headers: { Authorization: state.token } })
+      commit('deleteUserSavedItem', { item: response.data.item })
     }
   },
   getters: {

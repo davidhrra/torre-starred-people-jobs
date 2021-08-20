@@ -9,3 +9,9 @@
 
 - [4:00pm - 8:30pm]: Login page building (4 1/2 hours)
 - [9:00pm - 10:00pm]: Login and authetication adjustments (1 hour)
+
+
+### Log 20/08/2021
+
+- [8:00am - 12:30pm]: Dashboard and lists building (4 1/2 hours)
+- [2:00pm - 4:30pm]: Saved Item Details building (2 1/2 hour)

@@ -1,13 +1,17 @@
 import { Component, Vue } from 'vue-property-decorator'
 import SavedItem from '@/components/saved-item/SavedItem.vue'
+import ItemDetails from '@/components/item-details/ItemDetails.vue'
 import { SavedItemsTypes } from '@/enums'
+import store from '@/store'
 
-@Component({ name: 'dashboard', components: { SavedItem } })
+@Component({ name: 'dashboard', components: { SavedItem, ItemDetails } })
 export default class Dashboard extends Vue {
   private loadingMainContent: boolean;
   private loadUserInfoError: string;
   private showSaved: boolean;
   private showJobs: boolean;
+  // eslint-disable-next-line
+  private selectedItem: any;
 
   constructor () {
     super()
@@ -15,21 +19,22 @@ export default class Dashboard extends Vue {
     this.loadUserInfoError = ''
     this.showSaved = false
     this.showJobs = true
+    this.selectedItem = null
   }
   // eslint-disable-next-line
   get loggedUser(): any {
-    return this.$store.getters.loggedUser
+    return store.getters.loggedUser
   }
   // eslint-disable-next-line
   get torreUserInfo(): any {
-    return this.$store.getters.torreUser
+    return store.getters.torreUser
   }
 
   // eslint-disable-next-line
   get userSavedItems(): any[] {
     const selectedType = this.showJobs ? SavedItemsTypes.JOB : SavedItemsTypes.USER
     // eslint-disable-next-line
-    return this.$store.getters.savedItems.filter((savedItem: any) => savedItem.type === selectedType)
+    return store.getters.savedItems.filter((savedItem: any) => savedItem.type === selectedType)
   }
 
   mounted (): void {
@@ -57,5 +62,14 @@ export default class Dashboard extends Vue {
 
   setShowJobs (value: boolean): void {
     this.showJobs = value
+  }
+
+  // eslint-disable-next-line
+  selectItem (payload: any): void{
+    this.selectedItem = payload
+  }
+
+  cleanSelectedItem (): void{
+    this.selectedItem = null
   }
 }

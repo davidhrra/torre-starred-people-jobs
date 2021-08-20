@@ -7,6 +7,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 export default class SavedItem extends Vue {
     // eslint-disable-next-line
     @Prop({ required: true, default: {} }) private savedItem: any;
+    // eslint-disable-next-line
+    @Prop({ required: true, default: null }) private selectedItem: any;
 
     private loading: boolean;
     // eslint-disable-next-line
@@ -18,13 +20,18 @@ export default class SavedItem extends Vue {
       this.loading = false
       this.savedItemInfo = {}
       this.error = ''
+      this.selectedItem = null
+    }
+
+    get itemIsSelected (): boolean {
+      return this.selectedItem && this.selectedItem.torreId === this.savedItem.torreId && this.selectedItem.type === this.savedItem.type
     }
 
     get type (): SavedItemsTypes {
       return this.savedItem.type
     }
 
-    mounted (): void{
+    mounted (): void {
       this.loadItemInfo()
     }
 
@@ -49,5 +56,9 @@ export default class SavedItem extends Vue {
         this.error = err.response?.data?.message ? err.response?.data?.message.toString() : err.toString()
       }
       this.loading = false
+    }
+
+    selectItem (): void {
+      this.$emit('select-item', { type: this.type, torreId: this.savedItem.torreId })
     }
 }

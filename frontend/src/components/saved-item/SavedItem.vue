@@ -1,5 +1,5 @@
 <template>
-    <div class="w-100 p-2 border-bottom pointer saved-item" >
+    <div class="w-100 p-2 border-bottom pointer saved-item" :class="{'active': itemIsSelected}" @click="selectItem">
         <template v-if="loading">
             <div class="w-100 d-flex align-items-center justify-content-center py-4">
                 <font-awesome-icon icon="circle-notch" spin size="lg"></font-awesome-icon>

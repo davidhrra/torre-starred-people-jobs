@@ -6,7 +6,9 @@ import {
   faCircleNotch,
   faPowerOff,
   faSave,
-  faSearch
+  faSearch,
+  faStar,
+  faTimes
 } from '@fortawesome/free-solid-svg-icons'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
@@ -15,5 +17,7 @@ library.add(
   faCircleNotch,
   faPowerOff,
   faSave,
-  faSearch
+  faSearch,
+  faStar,
+  faTimes
 )

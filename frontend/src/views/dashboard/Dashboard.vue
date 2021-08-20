@@ -10,7 +10,7 @@
             <div class="d-flex flex-column w-100 h-100 flex-grow-1">
                 <div class="dashboard-header d-flex justify-content-end px-3 pt-3">
                     <div class="header-user-info col-12 col-lg-4 d-flex align-items-center justify-content-around">
-                        <img :src="torreUserInfo.pictureThumbnail" width="40px" class="border torre-border rounded-pill" alt="...">
+                        <img v-if="torreUserInfo && torreUserInfo.pictureThumbnail" :src="torreUserInfo.pictureThumbnail" width="40px" class="border torre-border rounded-pill" alt="...">
                         <h6> Welcome {{torreUserInfo.name}}</h6>
                         <font-awesome-icon icon="power-off" class="text-danger pointer" @click="logout()" size="lg"></font-awesome-icon>
                     </div>
@@ -33,12 +33,15 @@
                         </div>
                         <template v-if="showSaved">
                                 <div v-if="Array.isArray(userSavedItems) && userSavedItems.length > 0">
-                                    <saved-item v-for="savedItem of userSavedItems" :key="savedItem._id" :savedItem="savedItem"/>
+                                    <saved-item v-for="savedItem of userSavedItems" :key="savedItem._id" :savedItem="savedItem" @select-item="selectItem" :selectedItem="selectedItem"/>
                                 </div>
                                 <div class="d-flex w-100 align-items-center justify-content-center text-center mt-5" v-else>
                                     You have no saved elements. Why don't you try to add some saved elements?
                                 </div>
                         </template>
+                    </div>
+                    <div v-if="selectedItem" class="details-view col-7 col-lg-7 custom-scrollbar">
+                        <item-details :selectedItem="selectedItem" @close-details="cleanSelectedItem"/>
                     </div>
                 </div>
             </div>
