@@ -9,7 +9,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     token: '',
-    user: {}
+    // eslint-disable-next-line
+    user: '' as any,
+    // eslint-disable-next-line
+    torreUserInfo: null as any,
+    userSavedItems: []
   },
   mutations: {
     setToken: (state, payload) => {
@@ -17,8 +21,14 @@ export default new Vuex.Store({
       state.token = payload.token
     },
     setLogedUser: (state, payload) => {
-      localStorage.setItem(environment.userInfoItemName, payload.user)
+      localStorage.setItem(environment.userInfoItemName, JSON.stringify(payload.user))
       state.user = payload.user
+    },
+    setTorreUserInfo: (state, payload) => {
+      state.torreUserInfo = payload.user
+    },
+    setUserSavedItems: (state, payload) => {
+      state.userSavedItems = payload.item
     }
   },
   actions: {
@@ -39,12 +49,29 @@ export default new Vuex.Store({
     },
     logout: ({ commit }) => {
       commit('setToken', { token: '' })
-      commit('setLogedUser', { user: {} })
+      commit('setLogedUser', { user: '' })
       router.push('/')
+    },
+    loadTorreUserInfo: async ({ commit, state }) => {
+      console.log(state.user)
+      const { torreUsername } = state.user
+      const url = `${environment.appAPI}/user/torre/${torreUsername}`
+      const response = await axios.get(url)
+      const { user } = response.data
+      commit('setTorreUserInfo', { user })
+    },
+    loadUserSavedItems: async ({ commit, state }) => {
+      const { _id } = state.user
+      const url = `${environment.appAPI}/saved-items/${_id}`
+      const response = await axios.get(url, { headers: { Authorization: state.token } })
+      const { item } = response.data
+      commit('setUserSavedItems', { item })
     }
   },
   getters: {
     authToken: state => state.token,
-    loggedUser: state => state.user
+    loggedUser: state => state.user,
+    torreUser: state => state.torreUserInfo,
+    savedItems: state => state.userSavedItems
   }
 })

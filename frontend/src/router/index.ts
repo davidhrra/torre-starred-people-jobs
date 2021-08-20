@@ -36,6 +36,9 @@ router.beforeEach((to, from, next) => {
   const localStorageUser = localStorage.getItem(environment.userInfoItemName)
   const localStorageAuthToken = localStorage.getItem(environment.authTokenItemName)
 
+  store.commit('setToken', { token: localStorageAuthToken })
+  store.commit('setLogedUser', { user: localStorageUser ? JSON.parse(localStorageUser) : '' })
+
   if (!localStorageUser && !localStorageAuthToken && to.meta?.requiresAuth) {
     store.dispatch('logout')
     next(false)
@@ -43,8 +46,6 @@ router.beforeEach((to, from, next) => {
   }
 
   if (!!localStorageUser && !!localStorageAuthToken && !to.meta?.requiresAuth) {
-    store.commit('setToken', { token: localStorageAuthToken })
-    store.commit('setLogedUser', { user: localStorageUser })
     next('/dashboard')
   }
 

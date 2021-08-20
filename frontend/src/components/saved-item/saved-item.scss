@@ -1,0 +1,5 @@
+.saved-item{
+    &.active, &:hover{
+        background-color: var(--bs-gray-800);
+    }
+}

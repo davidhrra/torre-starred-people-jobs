@@ -1,11 +1,21 @@
+$torre-color:#CDDC39;
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;700&display=swap');
+
 
 body{
     font-family: 'Montserrat', sans-serif !important;
 }
 
 .torre-color{
-    color: #CDDC39
+    color: $torre-color
+}
+
+.torre-border{
+    border-color: $torre-color;
+}
+
+.pointer{
+    cursor: pointer;
 }
 
 .font-weight-lighter{
@@ -13,5 +23,5 @@ body{
 }
 
 .torre-background{
-    background-color: #CDDC39;
+    background-color: $torre-color;
 }

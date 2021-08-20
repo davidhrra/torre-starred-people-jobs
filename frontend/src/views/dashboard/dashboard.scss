@@ -1,4 +1,51 @@
-.dashboard-holder{
-    width: 100vw;
-    height: 100vh;
+@import "@/main.scss";
+
+.dashboard-header{
+    width: 100%;
+    height: 80px;
+    max-height: 80px;
+    min-height: 80px;
+}
+
+.nav-tab{
+    color: var(--bs-gray-600);
+    transition: color .3s;
+
+    &.active, &:hover{
+        color: var(--bs-light);
+    }
+}
+
+.list-view{
+    overflow-y: auto;
+    max-height: inherit;
+    height: inherit;
+}
+
+.type-selector-item{
+    transition: all .3s;
+    &.active, &:hover{
+        color: $torre-color;
+        border-bottom: $torre-color 1px solid;
+    }
+}
+
+.dashboard-body{
+    min-height: 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track{
+	border-radius: 10px;
+	background-color: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar{
+	width: 6px;
+	background-color: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb{
+	border-radius: 10px;
+	background-color: rgba(255,255,255,0.5);
+    max-height: 50px;
 }
