@@ -43,6 +43,7 @@ export default class Login extends Vue {
     cleanLoginForm (): void {
       this.loginPassword = ''
       this.loginUsername = ''
+      this.loginErrorMessage = ''
     }
 
     cleanRegisterForm (cleanRegisterFormSucceed = true): void {
@@ -58,7 +59,6 @@ export default class Login extends Vue {
       try {
         this.loginErrorMessage = ''
         await this.$store.dispatch('login', { username: this.loginUsername, password: this.loginPassword })
-        this.loginErrorMessage = 'Se inició sesión correctamente'
       } catch (err) {
         this.loginErrorMessage = err.response.data.message.toString()
       }

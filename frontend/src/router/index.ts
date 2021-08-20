@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import Login from '../views/login/Login.vue'
+import Login from '@/views/login/Login.vue'
+import Dashboard from '@/views/dashboard/Dashboard.vue'
+import store from '@/store'
+import { environment } from '@/environments'
 
 Vue.use(VueRouter)
 
@@ -8,22 +11,44 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Login',
+    meta: {
+      requiresAuth: false
+    },
     component: Login
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    meta: {
+      requiresAuth: true
+    },
+    component: Dashboard
   }
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const localStorageUser = localStorage.getItem(environment.userInfoItemName)
+  const localStorageAuthToken = localStorage.getItem(environment.authTokenItemName)
+
+  if (!localStorageUser && !localStorageAuthToken && to.meta?.requiresAuth) {
+    store.dispatch('logout')
+    next(false)
+    return
+  }
+
+  if (!!localStorageUser && !!localStorageAuthToken && !to.meta?.requiresAuth) {
+    store.commit('setToken', { token: localStorageAuthToken })
+    store.commit('setLogedUser', { user: localStorageUser })
+    next('/dashboard')
+  }
+
+  next()
 })
 
 export default router

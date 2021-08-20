@@ -1,4 +1,5 @@
 import { environment } from '@/environments'
+import router from '@/router'
 import axios from 'axios'
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -7,11 +8,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token: ''
+    token: '',
+    user: {}
   },
   mutations: {
     setToken: (state, payload) => {
+      localStorage.setItem(environment.authTokenItemName, payload.token)
       state.token = payload.token
+    },
+    setLogedUser: (state, payload) => {
+      localStorage.setItem(environment.userInfoItemName, payload.user)
+      state.user = payload.user
     }
   },
   actions: {
@@ -25,10 +32,19 @@ export default new Vuex.Store({
       const { username, password } = payload
       const url = `${environment.appAPI}/auth/login`
       const response = await axios.post(url, { username, password })
-      const { token } = response.data
+      const { token, user } = response.data
       commit('setToken', { token })
+      commit('setLogedUser', { user })
+      router.push('/dashboard')
+    },
+    logout: ({ commit }) => {
+      commit('setToken', { token: '' })
+      commit('setLogedUser', { user: {} })
+      router.push('/')
     }
   },
-  modules: {
+  getters: {
+    authToken: state => state.token,
+    loggedUser: state => state.user
   }
 })

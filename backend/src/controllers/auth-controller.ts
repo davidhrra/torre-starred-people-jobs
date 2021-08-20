@@ -12,7 +12,7 @@ authController.post("/login", async (request, response, next) => {
 
         if (!username || !password) return response.status(401).json({ error: true, message: "Both username and password are required to login" });
 
-        const user = await User.findOne({ username });
+        let user = await User.findOne({ username });
 
         if (!user) {
             return response.status(401).json({ error: true, message: "The given user doesn't exists" });
@@ -31,14 +31,16 @@ authController.post("/login", async (request, response, next) => {
             lastLogin: user.lastLogin,
         };
 
-        await user.save();
+        user = await user.save();
+
+        user.set('password', undefined);
 
         if (!jwtSecret) {
             return response.status(500).json({ error: true, message: "Couldn't validate the token" });
         }
 
         const token = sign(payload, jwtSecret, { expiresIn: '24h' });
-        response.json({ error: false, token: `Bearer ${token}` })
+        response.json({ error: false, token: `Bearer ${token}`, user})
     } catch (err) {
         next(err);
     }
