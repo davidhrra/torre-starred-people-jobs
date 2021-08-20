@@ -8,3 +8,4 @@
 ### Log 19/08/2021
 
 - [4:00pm - 8:30pm]: Login page building (4 1/2 hours)
+- [9:00pm - 10:00pm]: Login and authetication adjustments (1 hour)
