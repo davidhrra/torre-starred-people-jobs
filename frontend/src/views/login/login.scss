@@ -1,6 +1,8 @@
 .login-btn {
-  background-color: var(--bs-light);
+  color: var(--bs-gray-600);
+  background-color: var(--bs-gray-400);
   &.active {
-    color: var(--bs-gray-600);
+    background-color: var(--bs-light);
+    color: var(--bs-body-color);
   }
 }

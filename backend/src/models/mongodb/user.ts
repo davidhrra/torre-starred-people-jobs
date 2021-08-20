@@ -17,18 +17,6 @@ const UserSchema = new Schema(
             type: Types.String,
             required: true
         },
-        name: {
-            firstName: {
-                type: Types.String,
-                required: true,
-                default: ""
-            },
-            lastName: {
-                type: Types.String,
-                required: true,
-                default: ""
-            }
-        },
         lastLogin: {
             type: Types.Date,
             required: false

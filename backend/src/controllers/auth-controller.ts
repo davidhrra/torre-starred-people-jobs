@@ -28,7 +28,6 @@ authController.post("/login", async (request, response, next) => {
         const payload = {
             _id: user._id,
             username: user.username,
-            name: user.name,
             lastLogin: user.lastLogin,
         };
 

@@ -4,12 +4,13 @@ import router from './router'
 import store from './store'
 
 import 'bootstrap'
+import { environment } from './environments'
 
 require('bootstrap/dist/css/bootstrap.min.css')
 require('./main.scss')
 
 Vue.config.productionTip = false
-Vue.prototype.$baseAPI = process.env.BASE_API_URL || null
+Vue.prototype.$baseAPI = environment.appAPI || null
 
 new Vue({
   router,
