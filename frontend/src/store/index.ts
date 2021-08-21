@@ -60,6 +60,9 @@ export default new Vuex.Store({
     },
     cleanSearchResults: (state) => {
       state.searchResults = []
+    },
+    setNewSavedItem: (state, payload) => {
+      (state.userSavedItems as any).splice(0, 0, payload.item)
     }
   },
   actions: {
@@ -131,6 +134,13 @@ export default new Vuex.Store({
 
       commit('addSearchResults', { results })
       commit('setSearchNextPage', { nextPage: pagination.next })
+    },
+    saveItem: async ({ commit, state }, payload) => {
+      const { type, torreId } = payload
+      const url = `${environment.appAPI}/saved-items`
+      const response = await axios.post(url, { item: { type, torreId, user: state.user._id } }, { headers: { Authorization: state.token } })
+      const { item } = response.data
+      commit('setNewSavedItem', { item })
     }
   },
   getters: {

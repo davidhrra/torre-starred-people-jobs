@@ -77,6 +77,10 @@ export default class Dashboard extends Vue {
   }
 
   setShowSaved (value: boolean): void {
+    if (value !== this.showSaved) {
+      this.cleanSeachInfo()
+      this.cleanSelectedItem()
+    }
     this.showSaved = value
   }
 

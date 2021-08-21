@@ -102,14 +102,32 @@ export default class ItemDetails extends Vue {
     deleteOrSaveItem (): void {
       if (this.savedItem) {
         this.deleteItem()
+        return
+      }
+      this.saveItem()
+    }
+
+    async saveItem (): Promise<void> {
+      if (!this.savedItem) {
+        this.loadingChanges = true
+        try {
+          await this.$store.dispatch('saveItem', { type: this.selectedItem.type, torreId: this.selectedItem.torreId })
+        } catch (err) {
+          console.error(err)
+        }
+        this.loadingChanges = false
       }
     }
 
     async deleteItem (): Promise<void> {
       if (this.savedItem) {
         this.loadingChanges = true
-        await this.$store.dispatch('deleteItem', { id: this.savedItem._id })
-        this.close()
+        try {
+          await this.$store.dispatch('deleteItem', { id: this.savedItem._id })
+          this.close()
+        } catch (err) {
+          console.error(err)
+        }
         this.loadingChanges = false
       }
     }

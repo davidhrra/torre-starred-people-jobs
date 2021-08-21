@@ -32,7 +32,7 @@
                         </div>
                         <div class="d-flex col-6 align-items-center justify-content-around">
                             <font-awesome-icon @click="starItem()" :class="{'gold': isStarred}" class="pointer" icon="star" size="lg"></font-awesome-icon>
-                            <button @click="deleteOrSaveItem()" :class="{'torre-background': !savedItem, 'btn-danger': savedItem}" :disabled="loadingChanges" class="btn btn-sm">
+                            <button @click="deleteOrSaveItem()" :class="{'torre-button': !savedItem, 'btn-danger': savedItem}" :disabled="loadingChanges" class="btn btn-sm">
                                 <small>
                                     {{!!savedItem ? 'Delete' : 'Save'}}
                                 </small>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="d-flex col-6 align-items-center justify-content-around">
                             <font-awesome-icon :class="{'gold': isStarred}" @click="starItem()" class="pointer" icon="star" size="lg"></font-awesome-icon>
-                            <button @click="deleteOrSaveItem()" :class="{'torre-background': !savedItem, 'btn-danger': savedItem}" :disabled="loadingChanges" class="btn btn-sm">
+                            <button @click="deleteOrSaveItem()" :class="{'torre-button': !savedItem, 'btn-danger': savedItem}" :disabled="loadingChanges" class="btn btn-sm">
                                 <small>
                                     {{!!savedItem ? 'Delete' : 'Save'}}
                                 </small>
@@ -76,14 +76,14 @@
                         </div>
                     </div>
                     <div class="w-100 d-flex mt-3">
-                        <div class="col-6 px-3">
+                        <div class="col-6 px-5">
                             <p >
                                 <small>
                                     {{savedItemInfo.summaryOfBio ? savedItemInfo.summaryOfBio : 'No biography found'}}
                                 </small>
                             </p>
                         </div>
-                        <div class="col-6 px-3">
+                        <div class="col-6">
                             <b>
                                 <p>Location</p>
                             </b>

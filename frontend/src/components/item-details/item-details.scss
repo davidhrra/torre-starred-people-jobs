@@ -1,4 +1,6 @@
 @import 'bootstrap';
+@import "@/main.scss";
+
 
 .gold {
     color: $yellow-400
@@ -6,4 +8,9 @@
 
 video{
     margin-top: 20px;
+}
+
+.torre-button{
+    background-color: $torre-color;
+    color: black;
 }
