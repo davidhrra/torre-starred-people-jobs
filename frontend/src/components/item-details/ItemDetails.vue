@@ -51,7 +51,7 @@
                         <div class="col-6">
                             <h3 class="torre-color">
                                 <b>
-                                    {{savedItemInfo.name}}
+                                    {{savedItemInfo.name ? savedItemInfo.name : 'No name found'}}
                                 </b>
                             </h3>
                         </div>
@@ -66,18 +66,20 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-around w-100">
                         <div class="col-6 d-flex align-items-center justify-content-center">
-                            <img :src="savedItemInfo.picture" width="200px" class="border torre-border rounded-pill" alt="...">
+                            <img v-if="savedItemInfo.picture || savedItemInfo.pictureThumbnail" :src="savedItemInfo.picture ? savedItemInfo.picture : savedItemInfo.pictureThumbnail" width="200px" class="border torre-border rounded-pill" alt="...">
+                            <font-awesome-icon v-else icon="user" class="my-5" size="5x"></font-awesome-icon>
+
                         </div>
                         <div class="col-6 d-flex flex-column align-items-start justify-content-center">
-                            <b>{{savedItemInfo.name}}</b>
-                            <p>{{savedItemInfo.professionalHeadline}}</p>
+                            <b>{{savedItemInfo.name ? savedItemInfo.name : 'No name found'}}</b>
+                            <p>{{savedItemInfo.professionalHeadline ? savedItemInfo.professionalHeadline : 'No headline found'}}</p>
                         </div>
                     </div>
                     <div class="w-100 d-flex mt-3">
                         <div class="col-6 px-3">
                             <p >
                                 <small>
-                                    {{savedItemInfo.summaryOfBio}}
+                                    {{savedItemInfo.summaryOfBio ? savedItemInfo.summaryOfBio : 'No biography found'}}
                                 </small>
                             </p>
                         </div>
@@ -85,7 +87,7 @@
                             <b>
                                 <p>Location</p>
                             </b>
-                            <small>{{savedItemInfo.location.shortName}}</small>
+                            <small>{{savedItemInfo.location.shortName ? savedItemInfo.location.shortName : 'No location found'}}</small>
                         </div>
                     </div>
                 </template>

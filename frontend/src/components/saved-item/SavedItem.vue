@@ -19,10 +19,17 @@
                     <p class="torre-color">{{savedItemInfo.objective}}</p>
                 </template>
                 <template v-else>
-                    <img :src="savedItemInfo.pictureThumbnail" width="50px" class="border torre-border rounded-pill" alt="...">
-                    <div>
-                        <b>{{savedItemInfo.name}}</b>
-                        <p>{{savedItemInfo.professionalHeadline}}</p>
+                    <div class="d-flex w-100">
+                        <div class="col-3">
+                            <img v-if="savedItemInfo.pictureThumbnail || savedItemInfo.pictureThumbnail" :src="savedItemInfo.pictureThumbnail ? savedItemInfo.pictureThumbnail : savedItemInfo.picture" width="50px" class="border torre-border rounded-pill" alt="...">
+                            <font-awesome-icon v-else icon="user" size="3x"></font-awesome-icon>
+                        </div>
+                        <div class="col-9">
+                            <div>
+                                <b>{{savedItemInfo.name}}</b>
+                                <p>{{savedItemInfo.professionalHeadline}}</p>
+                            </div>
+                        </div>
                     </div>
                 </template>
 

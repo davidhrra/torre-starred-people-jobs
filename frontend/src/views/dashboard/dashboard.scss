@@ -38,6 +38,31 @@
     min-height: 0;
 }
 
+.searchbar{
+    border-radius: 10px 0 0 10px;
+    color: white;
+    border-width: 1px 0 1px 1px;
+    border-color: white;
+    border-style: solid;
+    &::placeholder, &:-ms-input-placeholder, &::-ms-input-placeholder, & :focus{
+        color: white !important;
+    }
+    &:focus-visible{
+        outline: none !important;
+    }
+}
+
+.search-icon{
+    border-radius: 0 10px 10px 0;
+    color: white;
+    border-width: 1px 1px 1px 0;
+    border-color: white;
+    border-style: solid;
+    padding-left: 5px;
+    padding-right: 15px;
+
+}
+
 .custom-scrollbar::-webkit-scrollbar-track{
 	border-radius: 10px;
 	background-color: transparent;

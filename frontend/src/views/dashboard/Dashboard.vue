@@ -10,7 +10,7 @@
             <div class="d-flex flex-column w-100 h-100 flex-grow-1">
                 <div class="dashboard-header d-flex justify-content-end px-3 pt-3">
                     <div class="header-user-info col-12 col-lg-4 d-flex align-items-center justify-content-around">
-                        <img v-if="torreUserInfo && torreUserInfo.pictureThumbnail" :src="torreUserInfo.pictureThumbnail" width="40px" class="border torre-border rounded-pill" alt="...">
+                        <img v-if="torreUserInfo && (torreUserInfo.pictureThumbnail || torreUserInfo.picture)" :src="torreUserInfo.pictureThumbnail ? torreUserInfo.pictureThumbnail : torreUserInfo.picture" width="40px" class="border torre-border rounded-pill" alt="...">
                         <h6> Welcome {{torreUserInfo.name}}</h6>
                         <font-awesome-icon icon="power-off" class="text-danger pointer" @click="logout()" size="lg"></font-awesome-icon>
                     </div>
@@ -38,6 +38,36 @@
                                 <div class="d-flex w-100 align-items-center justify-content-center text-center mt-5" v-else>
                                     You have no saved elements. Why don't you try to add some saved elements?
                                 </div>
+                        </template>
+                        <template v-else>
+                            <div class="w-100 mt-2 px-3 py-2">
+                                <div class="form-outline d-flex">
+                                    <input type="text" v-model="searchKeyword" @keypress.enter="search()" class="searchbar bg-dark form-control-sm w-100 " :placeholder="showJobs ? 'Type to search by skill' : 'Type to search by name'" />
+                                    <span class="search-icon d-flex align-items-center justify-content-center">
+                                        <font-awesome-icon icon="search" @click="search()" class="pointer" size="md"></font-awesome-icon>
+                                    </span>
+                                </div>
+                                <div class="w-100 py-3 px-2" v-if="!searchKeywordIsValid && !loadingSearchResults">
+                                    <p class="text-center">
+                                        Type at least three characters and search
+                                    </p>
+                                </div>
+                                <div class="w-100 d-flex flex-column align-items-center justify-content-center py-3" v-if="loadingSearchResults">
+                                    <font-awesome-icon icon="circle-notch" spin size="2x"></font-awesome-icon>
+                                    <h5 class="mt-3">Loading...</h5>
+                                </div>
+                                <template v-if="searchKeywordIsValid && !loadingSearchResults">
+                                    <div v-if="Array.isArray(searchResults) && searchResults.length > 0">
+                                        <saved-item v-for="savedItem of searchResults" :key="savedItem._id" :savedItem="savedItem" @select-item="selectItem" :selectedItem="selectedItem"/>
+                                        <button v-if="!!nextPage" @click="search(false)" class="text-light w-100 mt-3 mb-2 btn btn-outline-secondary btn-sm">Load more</button>
+                                    </div>
+                                    <div class="d-flex w-100 align-items-center justify-content-center text-center mt-5" v-else>
+                                        We couldn't find any result with your search
+                                    </div>
+
+                                </template>
+                            </div>
+
                         </template>
                     </div>
                     <div v-if="selectedItem" class="details-view col-7 col-lg-7 custom-scrollbar">

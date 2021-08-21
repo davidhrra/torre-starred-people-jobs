@@ -12,6 +12,9 @@ export default class Dashboard extends Vue {
   private showJobs: boolean;
   // eslint-disable-next-line
   private selectedItem: any;
+  private searchKeyword: string;
+  private loadingSearchResults: boolean;
+  private searchError: string;
 
   constructor () {
     super()
@@ -20,6 +23,9 @@ export default class Dashboard extends Vue {
     this.showSaved = false
     this.showJobs = true
     this.selectedItem = null
+    this.searchKeyword = ''
+    this.loadingSearchResults = false
+    this.searchError = ''
   }
   // eslint-disable-next-line
   get loggedUser(): any {
@@ -29,12 +35,26 @@ export default class Dashboard extends Vue {
   get torreUserInfo(): any {
     return store.getters.torreUser
   }
+  // eslint-disable-next-line
+  get searchResults(): any[]{
+    // eslint-disable-next-line
+    return store.getters.searchResults.map((result: any) => { 
+      return {
+        torreId: result.username ? result.username : result.id,
+        type: this.showJobs ? SavedItemsTypes.JOB : SavedItemsTypes.USER
+      }
+    })
+  }
 
   // eslint-disable-next-line
   get userSavedItems(): any[] {
     const selectedType = this.showJobs ? SavedItemsTypes.JOB : SavedItemsTypes.USER
     // eslint-disable-next-line
     return store.getters.savedItems.filter((savedItem: any) => savedItem.type === selectedType)
+  }
+
+  get nextPage (): string | null {
+    return store.getters.nextPage
   }
 
   mounted (): void {
@@ -61,6 +81,10 @@ export default class Dashboard extends Vue {
   }
 
   setShowJobs (value: boolean): void {
+    if (value !== this.showJobs) {
+      this.cleanSeachInfo()
+      this.cleanSelectedItem()
+    }
     this.showJobs = value
   }
 
@@ -71,5 +95,33 @@ export default class Dashboard extends Vue {
 
   cleanSelectedItem (): void{
     this.selectedItem = null
+  }
+
+  get searchKeywordIsValid (): boolean {
+    return this.searchKeyword.trim().length > 3
+  }
+
+  search (newSearch = true): void{
+    if (!this.showJobs) {
+      this.searchUser(newSearch)
+    }
+  }
+
+  cleanSeachInfo () {
+    this.searchKeyword = ''
+    this.$store.commit('cleanSearchResults')
+    this.$store.commit('setSearchNextPage', { nextPage: null })
+  }
+
+  async searchUser (newSearch = true): Promise<void> {
+    if (this.searchKeywordIsValid && !this.loadingSearchResults) {
+      this.loadingSearchResults = true
+      try {
+        await this.$store.dispatch('searchUser', { name: this.searchKeyword, newSearch })
+      } catch (err) {
+        this.searchError = err.response.data.message.toString()
+      }
+      this.loadingSearchResults = false
+    }
   }
 }

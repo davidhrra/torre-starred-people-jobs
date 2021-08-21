@@ -8,7 +8,8 @@ import {
   faSave,
   faSearch,
   faStar,
-  faTimes
+  faTimes,
+  faUser
 } from '@fortawesome/free-solid-svg-icons'
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
@@ -19,5 +20,6 @@ library.add(
   faSave,
   faSearch,
   faStar,
-  faTimes
+  faTimes,
+  faUser
 )
