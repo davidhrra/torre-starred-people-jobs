@@ -76,12 +76,43 @@ userController.post("/torre/search/person", async (request, response, next) => {
         if (!size) return response.status(400).json({ error: true, message: "The size is a required argument" });
 
         try {
-            axiosResponse = await axios.post(`${torreBaseSearchUrl}/people/_search?lang=en&size=${size}${nextPage ? '&after=' + nextPage : ''}`, { name: { term: name ? name : '' } },);
+            axiosResponse = await axios.post(`${torreBaseSearchUrl}/people/_search?lang=en&size=${size}${nextPage ? '&after=' + nextPage : ''}`, 
+            { 
+                name: { 
+                    term: name ? name : '' 
+                } 
+            });
         } catch (err) {
             return response.status(500).json({ error: true, message: 'An error ocurred making the query' });
         }
 
         return response.status(200).json({ error: false, users: axiosResponse.data });
+
+    } catch (err) {
+        next(err);
+    }
+});
+
+userController.post("/torre/search/job", async (request, response, next) => {
+    try {
+        const { nextPage, skill, size } = request.body;
+        let axiosResponse: any = null;
+
+        if (!size) return response.status(400).json({ error: true, message: "The size is a required argument" });
+
+        try {
+            axiosResponse = await axios.post(`${torreBaseSearchUrl}/opportunities/_search?lang=en&size=${size}${nextPage ? '&after=' + nextPage : ''}`, 
+            {
+                "skill/role": {
+                    "text": skill,
+                    "experience": "potential-to-develop"
+                }
+            });
+        } catch (err) {
+            return response.status(500).json({ error: true, message: 'An error ocurred making the query' });
+        }
+
+        return response.status(200).json({ error: false, jobs: axiosResponse.data });
 
     } catch (err) {
         next(err);

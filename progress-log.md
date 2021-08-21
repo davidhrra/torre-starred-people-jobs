@@ -16,4 +16,5 @@
 - [8:00am - 12:30pm]: Dashboard and lists building (4 1/2 hours)
 - [2:00pm - 4:30pm]: Saved Item Details building (2 1/2 hour)
 - [6:00pm - 8:00pm]: Building users search list (2 hour)
+- [8:00PM - 8:45pm]: Building jobs search list (3/4 hour)
 
