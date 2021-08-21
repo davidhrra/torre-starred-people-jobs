@@ -42,7 +42,7 @@
                         <template v-else>
                             <div class="w-100 mt-2 px-3 py-2">
                                 <div class="form-outline d-flex">
-                                    <input type="text" v-model="searchKeyword" @keypress.enter="search()" class="searchbar bg-dark form-control-sm w-100 " :placeholder="showJobs ? 'Type to search by skill' : 'Type to search by name'" />
+                                    <input type="text" v-model="searchKeyword" @keypress.enter="search()" class="searchbar bg-dark form-control-sm w-100 " :placeholder="showJobs ? 'Type to search by skill/role to develop' : 'Type to search by name'" />
                                     <span class="search-icon d-flex align-items-center justify-content-center">
                                         <font-awesome-icon icon="search" @click="search()" class="pointer" size="md"></font-awesome-icon>
                                     </span>

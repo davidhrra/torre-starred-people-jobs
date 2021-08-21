@@ -135,6 +135,22 @@ export default new Vuex.Store({
       commit('addSearchResults', { results })
       commit('setSearchNextPage', { nextPage: pagination.next })
     },
+    searchJobs: async ({ commit, state }, payload) => {
+      const { skill, newSearch } = payload
+
+      if (newSearch) {
+        commit('setSearchNextPage', { nextPage: null })
+        commit('cleanSearchResults')
+      }
+
+      const url = `${environment.appAPI}/user/torre/search/job`
+      const response = await axios.post(url, { skill, size: state.size, nextPage: state.searchNextPage })
+
+      const { results, pagination } = response.data.jobs
+
+      commit('addSearchResults', { results })
+      commit('setSearchNextPage', { nextPage: pagination.next })
+    },
     saveItem: async ({ commit, state }, payload) => {
       const { type, torreId } = payload
       const url = `${environment.appAPI}/saved-items`

@@ -102,19 +102,33 @@ export default class Dashboard extends Vue {
   }
 
   get searchKeywordIsValid (): boolean {
-    return this.searchKeyword.trim().length > 3
+    return this.searchKeyword.trim().length >= 3
   }
 
   search (newSearch = true): void{
     if (!this.showJobs) {
       this.searchUser(newSearch)
+      return
     }
+    this.searchJobs(newSearch)
   }
 
   cleanSeachInfo () {
     this.searchKeyword = ''
     this.$store.commit('cleanSearchResults')
     this.$store.commit('setSearchNextPage', { nextPage: null })
+  }
+
+  async searchJobs (newSearch = true): Promise<void> {
+    if (this.searchKeywordIsValid && !this.loadingSearchResults) {
+      this.loadingSearchResults = true
+      try {
+        await this.$store.dispatch('searchJobs', { skill: this.searchKeyword, newSearch })
+      } catch (err) {
+        this.searchError = err.response.data.message.toString()
+      }
+      this.loadingSearchResults = false
+    }
   }
 
   async searchUser (newSearch = true): Promise<void> {

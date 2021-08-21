@@ -16,7 +16,7 @@
             </div>
             <div class="w-100 d-flex align-items-start justify-content-around pt-4 pb-2 px-2" v-else>
                 <template v-if="type === 'JOB'">
-                    <p class="torre-color">{{savedItemInfo.objective}}</p>
+                    <p class="torre-color text-center">{{savedItemInfo.objective}}</p>
                 </template>
                 <template v-else>
                     <div class="d-flex w-100">
